@@ -1,0 +1,73 @@
+version: "2"
+
+services:
+  www:
+    image: ls-shipfast/ls-shipfast-www
+    container_name: www
+    restart: always
+    networks:
+      - my-net
+    ports:
+      - "8080:80"
+  orders:
+    image: ls-shipfast/ls-shipfast-orders
+    container_name: orders
+    restart: always
+    networks:
+      - my-net
+    expose:
+      - "80"
+  shipments:
+    image: ls-shipfast/ls-shipfast-shipments
+    container_name: shipments
+    restart: always
+    networks:
+      - my-net
+    expose:
+      - "80"
+  inventory:
+    image: ls-shipfast/ls-shipfast-inventory
+    container_name: inventory
+    restart: always
+    networks:
+      - my-net
+    expose:
+      - "80"
+  shipments-db:
+    image: mongo
+    container_name: shipments-db
+    networks:
+      - my-net
+    ports:
+      - "30000:27017"
+    expose:
+      - "27017"
+  orders-db:
+    image: mongo
+    container_name: orders-db
+    networks:
+      - my-net
+    ports:
+      - "30001:27017"
+    expose:
+      - "27017"
+  inventory-db:
+    image: mongo
+    container_name: inventory-db
+    networks:
+      - my-net
+    ports:
+      - "30002:27017"
+    expose:
+      - "27017"
+  nats:
+    image: nats
+    container_name: nats
+    networks:
+      - my-net
+    expose:
+      - "4222"
+
+networks:
+  my-net:
+    driver: bridge
